@@ -159,7 +159,8 @@ console.log(Math.min(...arr));
 // на 1. Значение счетчика должно быть доступно только через методы объекта,
 // а не напрямую.
 
-function createCounter(count) {
+function createCounter() {
+    let count = 0;
     function increment() {
         return ++count;
     }
@@ -169,7 +170,7 @@ function createCounter(count) {
     return {increment, decrement};
 }
 
-let counter = createCounter(5);
+const counter = createCounter();
 console.log(counter.increment());
 console.log(counter.increment());
 console.log(counter.decrement());
@@ -179,12 +180,17 @@ console.log(counter.decrement());
 // элемент дерева DOM и название класса в качестве аргументов и возвращает первый
 // найденный элемент с указанным классом в этом дереве.
 
-function findElementByClass(class1, DOMEl) {
-    if(class1 === DOMEl.classList.value){
+function findElementByClass(classEl, DOMEl) {
+    if(DOMEl.classList.contains(classEl)){
         return DOMEl;
-    } else {
-        return findElementByClass(class1, DOMEl.parentElement);
+    } 
+    for(const child of DOMEl.children){
+        const findClass = findElementByClass(classEl, child);
+        if(findClass){
+            return findClass;
+        }
     }
+    return null;
 }
 
 const rootElement = document.getElementById('root');
